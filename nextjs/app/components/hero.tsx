@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { StarIcon, Music2, Download, Printer, Eye } from "lucide-react";
+import Link from "next/link";
 
 export const Hero = () => {
   return (
@@ -54,8 +55,8 @@ export const Hero = () => {
           {/* CTA Buttons */}
           <div className="space-y-4">
             <div className="flex flex-wrap justify-center gap-4">
-              <Button size="lg" className="min-w-[200px]">
-                Start Learning
+              <Button size="lg" className="min-w-[200px]" asChild>
+                <Link href={"/lyrics/list"}>Start Learning</Link>
               </Button>
               <Button size="lg" variant="outline" className="min-w-[200px]">
                 Browse Songs

@@ -1,0 +1,146 @@
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { Music2 } from "lucide-react";
+import Link from "next/link";
+import Image from "next/image";
+import { CtaHeader } from "./cta-header";
+
+const MOCK_SONGS = [
+  {
+    id: 1,
+    title: "好想你",
+    titlePinyin: "Hǎo xiǎng nǐ",
+    artist: "四叶草",
+    artistPinyin: "Sì yè cǎo",
+    difficulty: "Easy",
+    image: "https://picsum.photos/500/500",
+  },
+  {
+    id: 2,
+    title: "漂洋过海来看你",
+    titlePinyin: "Piāo yáng guò hǎi lái kàn nǐ",
+    artist: "刘明湘",
+    artistPinyin: "Liú míng xiāng",
+    difficulty: "Medium",
+    image: "https://picsum.photos/500/500",
+  },
+  {
+    id: 3,
+    title: "月亮代表我的心",
+    titlePinyin: "Yuè liàng dài biǎo wǒ de xīn",
+    artist: "邓丽君",
+    artistPinyin: "Dèng lì jūn",
+    difficulty: "Easy",
+    image: "https://picsum.photos/500/500",
+  },
+  {
+    id: 4,
+    title: "告白气球",
+    titlePinyin: "Gào bái qì qiú",
+    artist: "周杰伦",
+    artistPinyin: "Zhōu jié lún",
+    difficulty: "Medium",
+    image: "https://picsum.photos/500/500",
+  },
+  {
+    id: 5,
+    title: "小幸运",
+    titlePinyin: "Xiǎo xìng yùn",
+    artist: "田馥甄",
+    artistPinyin: "Tián fù zhēn",
+    difficulty: "Easy",
+    image: "https://picsum.photos/500/500",
+  },
+  {
+    id: 6,
+    title: "平凡之路",
+    titlePinyin: "Píng fán zhī lù",
+    artist: "朴树",
+    artistPinyin: "Pǔ shù",
+    difficulty: "Hard",
+    image: "https://picsum.photos/500/500",
+  },
+];
+
+// ...existing imports...
+
+const SongRow = ({ song }: { song: (typeof MOCK_SONGS)[0] }) => (
+  <Link href={`/lyrics/${song.id}`}>
+    <div className="group flex items-center gap-4 p-4 hover:bg-muted/50 rounded-lg transition-colors">
+      {/* Cover Image */}
+      <div className="relative w-16 h-16 flex-shrink-0 overflow-hidden rounded-md">
+        <Image
+          fill
+          src={song.image}
+          alt={song.title}
+          className="object-cover group-hover:scale-105 transition-transform duration-500"
+        />
+      </div>
+
+      {/* Song Info - using flex-1 to take remaining space */}
+      <div className="flex-1 min-w-0">
+        {/* Title */}
+        <div className="space-y-0.5">
+          <h3 className="font-medium line-clamp-1">{song.title}</h3>
+          <p className="text-xs text-muted-foreground tracking-wide">
+            {song.titlePinyin}
+          </p>
+        </div>
+      </div>
+
+      {/* Artist - fixed width column */}
+      <div className="w-40 hidden sm:block">
+        <p className="text-sm line-clamp-1">{song.artist}</p>
+        <p className="text-xs text-muted-foreground">{song.artistPinyin}</p>
+      </div>
+
+      {/* Difficulty Badge - fixed width column */}
+      <div className="w-24 text-center hidden md:block">
+        <span className="text-xs bg-primary/10 text-primary px-2 py-1 rounded-full">
+          {song.difficulty}
+        </span>
+      </div>
+
+      {/* Action Button - fixed width column */}
+      <div className="w-32 flex-shrink-0">
+        <Button variant="secondary" size="sm" className="w-full">
+          <Music2 className="h-3 w-3 mr-1.5" />
+          View Lyrics
+        </Button>
+      </div>
+    </div>
+  </Link>
+);
+
+export default function LyricsListPage() {
+  return (
+    <div className="container py-8">
+      <CtaHeader />
+
+      {/* Table Header */}
+      <div className="flex items-center gap-4 p-4 border-b text-sm text-muted-foreground">
+        <div className="w-16" /> {/* Cover space */}
+        <div className="flex-1">Song</div>
+        <div className="w-40 hidden sm:block">Artist</div>
+        <div className="w-24 text-center hidden md:block">Level</div>
+        <div className="w-32" /> {/* Action space */}
+      </div>
+
+      {/* Songs List */}
+      <div className="divide-y">
+        {MOCK_SONGS.map((song) => (
+          <SongRow key={song.id} song={song} />
+        ))}
+      </div>
+
+      {/* Empty State */}
+      {MOCK_SONGS.length === 0 && (
+        <div className="text-center py-12">
+          <p className="text-muted-foreground">
+            No songs found matching your criteria
+          </p>
+        </div>
+      )}
+    </div>
+  );
+}
