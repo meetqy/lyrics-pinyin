@@ -7,19 +7,71 @@ import {
   NavigationMenuList,
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 
 export const Header = () => {
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-14 items-center">
-        {/* Logo */}
-        <div className="mr-8">
-          <Link href="/" className="font-bold text-xl flex items-center gap-2">
+        {/* Logo & Mobile Menu Trigger */}
+        <div className="flex items-center mr-8">
+          {/* Desktop Logo */}
+          <Link href="/" className="hidden md:flex font-bold text-xl">
             Lyrics Pinyin
           </Link>
+          <Sheet>
+            <SheetTrigger asChild>
+              <Link
+                href="#"
+                className="font-bold text-xl flex md:hidden items-center gap-2"
+              >
+                Lyrics Pinyin
+              </Link>
+            </SheetTrigger>
+            <SheetContent
+              side="left"
+              className="w-[80%] sm:w-[350px] md:hidden"
+            >
+              <SheetHeader>
+                <SheetTitle>Lyrics Pinyin</SheetTitle>
+              </SheetHeader>
+              <nav className="flex flex-col gap-4 mt-6">
+                <Link
+                  href="/songs"
+                  className="block px-2 py-1 hover:text-primary"
+                >
+                  Songs
+                </Link>
+                <Link
+                  href="/artists"
+                  className="block px-2 py-1 hover:text-primary"
+                >
+                  Artists
+                </Link>
+                <Link
+                  href="/about"
+                  className="block px-2 py-1 hover:text-primary"
+                >
+                  About
+                </Link>
+                <Link
+                  href="/#faq"
+                  className="block px-2 py-1 hover:text-primary"
+                >
+                  Help
+                </Link>
+              </nav>
+            </SheetContent>
+          </Sheet>
         </div>
 
-        {/* Main Navigation */}
+        {/* Desktop Navigation */}
         <NavigationMenu className="hidden md:flex">
           <NavigationMenuList>
             <NavigationMenuItem>
@@ -35,39 +87,11 @@ export const Header = () => {
                 className={navigationMenuTriggerStyle()}
                 asChild
               >
-                <Link href="/artists">Artists</Link>
-              </NavigationMenuLink>
-            </NavigationMenuItem>
-            <NavigationMenuItem>
-              <NavigationMenuLink
-                className={navigationMenuTriggerStyle()}
-                asChild
-              >
                 <Link href="/about">About</Link>
               </NavigationMenuLink>
             </NavigationMenuItem>
           </NavigationMenuList>
         </NavigationMenu>
-
-        {/* Mobile Navigation Trigger */}
-        <div className="flex md:hidden">
-          <Button variant="ghost" size="sm" className="px-2">
-            <span className="sr-only">Open main menu</span>
-            <svg
-              className="h-6 w-6"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M4 6h16M4 12h16M4 18h16"
-              />
-            </svg>
-          </Button>
-        </div>
 
         {/* Right Side Actions */}
         <div className="ml-auto flex items-center gap-4">
