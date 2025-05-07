@@ -45,6 +45,18 @@ export const CtaHeader = ({ searchParams }: { searchParams: any }) => {
   return (
     <div className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container py-10">
+        {/* Page Header */}
+        <div className="max-w-2xl mx-auto space-y-4 text-center mb-10">
+          <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">
+            Chinese Song Lyrics
+          </h1>
+          <p className="text-lg text-muted-foreground">
+            Find lyrics with pinyin for your favorite Chinese songs. Learn
+            pronunciation through music.
+          </p>
+        </div>
+
+        {/* Search and Filters */}
         <div className="max-w-3xl mx-auto">
           <div className="flex flex-col sm:flex-row items-center gap-4">
             <div className="relative flex-1 w-full">

@@ -56,7 +56,7 @@ export const Hero = () => {
           <div className="space-y-4">
             <div className="flex flex-wrap justify-center gap-4">
               <Button size="lg" className="min-w-[200px]" asChild>
-                <Link href={"/lyrics/list"}>Start Learning</Link>
+                <Link href={"/lyrics"}>Start Learning</Link>
               </Button>
               <Button size="lg" variant="outline" className="min-w-[200px]">
                 Browse Songs

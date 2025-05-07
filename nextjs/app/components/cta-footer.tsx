@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
+import Link from "next/link";
 
 export const CtaFooter = () => {
   return (
@@ -22,9 +23,11 @@ export const CtaFooter = () => {
 
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row justify-center gap-4">
-            <Button size="lg" className="gap-2">
-              Start Learning Now
-              <ArrowRight className="w-4 h-4" />
+            <Button size="lg" className="gap-2" asChild>
+              <Link href={"/lyrics"}>
+                Start Learning Now
+                <ArrowRight className="w-4 h-4" />
+              </Link>
             </Button>
             <Button size="lg" variant="outline">
               Browse Popular Songs

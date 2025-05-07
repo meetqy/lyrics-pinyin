@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Twitter } from "lucide-react";
+import { Github, Twitter } from "lucide-react";
 
 export const Footer = () => {
   return (
@@ -14,16 +14,28 @@ export const Footer = () => {
               Learn Chinese through music. Free tools for synchronized pinyin
               lyrics.
             </p>
-            <Button variant="outline" size="sm" asChild>
-              <Link
-                href="https://x.com/meetqy"
-                className="gap-2"
-                target="_blank"
-              >
-                <Twitter className="w-4 h-4" />
-                Follower on Twitter
-              </Link>
-            </Button>
+            <div className="flex gap-2">
+              <Button variant="outline" size="sm" asChild>
+                <Link
+                  href="https://x.com/meetqy"
+                  className="gap-2"
+                  target="_blank"
+                >
+                  <Twitter className="w-4 h-4" />
+                  Follow on Twitter
+                </Link>
+              </Button>
+              <Button variant="outline" size="sm" asChild>
+                <Link
+                  href="https://github.com/meetqy/lyrics-pinyin"
+                  className="gap-2"
+                  target="_blank"
+                >
+                  <Github className="w-4 h-4" />
+                  GitHub
+                </Link>
+              </Button>
+            </div>
           </div>
 
           {/* Resources */}
@@ -32,18 +44,10 @@ export const Footer = () => {
             <ul className="space-y-2 text-sm">
               <li>
                 <Link
-                  href="/songs"
+                  href="/lyrics"
                   className="text-muted-foreground hover:text-primary"
                 >
                   Popular Songs
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/artists"
-                  className="text-muted-foreground hover:text-primary"
-                >
-                  Artists
                 </Link>
               </li>
               <li>

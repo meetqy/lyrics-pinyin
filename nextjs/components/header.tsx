@@ -17,7 +17,7 @@ import {
 
 export const Header = () => {
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <header className="sticky top-0 z-50 w-full border-b border-border/50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-14 items-center">
         {/* Logo & Mobile Menu Trigger */}
         <div className="flex items-center mr-8">
@@ -43,10 +43,10 @@ export const Header = () => {
               </SheetHeader>
               <nav className="flex flex-col gap-4 mt-6">
                 <Link
-                  href="/songs"
+                  href="/lyrics"
                   className="block px-2 py-1 hover:text-primary"
                 >
-                  Songs
+                  Lyrics
                 </Link>
                 <Link
                   href="/artists"
@@ -79,7 +79,7 @@ export const Header = () => {
                 className={navigationMenuTriggerStyle()}
                 asChild
               >
-                <Link href="/songs">Songs</Link>
+                <Link href="/lyrics">Lyrics</Link>
               </NavigationMenuLink>
             </NavigationMenuItem>
             <NavigationMenuItem>

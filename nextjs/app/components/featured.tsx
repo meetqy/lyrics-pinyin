@@ -6,7 +6,9 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import Image from "next/image";
-import { StarIcon } from "lucide-react";
+import { ArrowRight, StarIcon } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 export const Featured = () => {
   return (
@@ -86,6 +88,16 @@ export const Featured = () => {
               <p className="text-muted-foreground text-sm">{stat.label}</p>
             </div>
           ))}
+        </div>
+
+        {/* View More Button */}
+        <div className="text-center pt-8">
+          <Button asChild size="lg">
+            <Link href="/lyrics" className="gap-2">
+              View All Songs
+              <ArrowRight className="h-4 w-4" />
+            </Link>
+          </Button>
         </div>
       </div>
     </section>
