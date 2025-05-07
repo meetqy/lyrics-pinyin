@@ -1,9 +1,50 @@
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
 import { Music2 } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { CtaHeader } from "./cta-header";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination";
+
+// Types
+type SearchParams = {
+  page?: string;
+  difficulty?: string;
+  q?: string;
+};
+
+// Constants
+const PAGE_SIZE = 10;
+
+const filterSongs = (songs: typeof MOCK_SONGS, params: SearchParams) => {
+  let filtered = [...songs];
+
+  if (params.difficulty && params.difficulty !== "all") {
+    filtered = filtered.filter(
+      (song) =>
+        song.difficulty.toLowerCase() === params.difficulty?.toLowerCase()
+    );
+  }
+
+  if (params.q) {
+    const query = params.q.toLowerCase();
+    filtered = filtered.filter(
+      (song) =>
+        song.title.toLowerCase().includes(query) ||
+        song.titlePinyin.toLowerCase().includes(query) ||
+        song.artist.toLowerCase().includes(query) ||
+        song.artistPinyin.toLowerCase().includes(query)
+    );
+  }
+
+  return filtered;
+};
 
 const MOCK_SONGS = [
   {
@@ -62,7 +103,58 @@ const MOCK_SONGS = [
   },
 ];
 
-// ...existing imports...
+// Pagination Component
+const PaginationControl = ({
+  total,
+  page,
+  searchParams,
+}: {
+  total: number;
+  page: number;
+  searchParams: SearchParams;
+}) => {
+  const totalPages = Math.ceil(total / PAGE_SIZE);
+
+  const createPageURL = (pageNumber: number) => {
+    const params = new URLSearchParams();
+    params.set("page", pageNumber.toString());
+    if (searchParams.difficulty)
+      params.set("difficulty", searchParams.difficulty);
+    if (searchParams.q) params.set("q", searchParams.q);
+    return `?${params.toString()}`;
+  };
+
+  return (
+    <Pagination className="py-4">
+      <PaginationContent>
+        <PaginationItem>
+          <PaginationPrevious
+            href={createPageURL(page - 1)}
+            aria-disabled={page <= 1}
+            className={page <= 1 ? "pointer-events-none opacity-50" : ""}
+          />
+        </PaginationItem>
+
+        {/* Current Page Info */}
+        <PaginationItem>
+          <span className="text-sm text-muted-foreground px-4">
+            Page {page} of {totalPages}
+          </span>
+        </PaginationItem>
+
+        <PaginationItem>
+          <PaginationNext
+            href={createPageURL(page + 1)}
+            aria-disabled={page >= totalPages}
+            className={
+              page >= totalPages ? "pointer-events-none opacity-50" : ""
+            }
+          />
+        </PaginationItem>
+      </PaginationContent>
+    </Pagination>
+  );
+};
 
 const SongRow = ({ song }: { song: (typeof MOCK_SONGS)[0] }) => (
   <Link href={`/lyrics/${song.id}`}>
@@ -112,10 +204,23 @@ const SongRow = ({ song }: { song: (typeof MOCK_SONGS)[0] }) => (
   </Link>
 );
 
-export default function LyricsListPage() {
+export default function LyricsListPage({
+  searchParams,
+}: {
+  searchParams: SearchParams;
+}) {
+  const currentPage = Number(searchParams.page || 1);
+  const filteredSongs = filterSongs(MOCK_SONGS, searchParams);
+  const totalSongs = filteredSongs.length;
+
+  // Pagination logic
+  const startIndex = (currentPage - 1) * PAGE_SIZE;
+  const endIndex = startIndex + PAGE_SIZE;
+  const currentSongs = filteredSongs.slice(startIndex, endIndex);
+
   return (
     <div className="container py-8">
-      <CtaHeader />
+      <CtaHeader searchParams={searchParams} />
 
       {/* Table Header */}
       <div className="flex items-center gap-4 p-4 border-b text-sm text-muted-foreground">
@@ -140,6 +245,15 @@ export default function LyricsListPage() {
             No songs found matching your criteria
           </p>
         </div>
+      )}
+
+      {/* Pagination */}
+      {totalSongs > 0 && (
+        <PaginationControl
+          total={totalSongs}
+          page={currentPage}
+          searchParams={searchParams}
+        />
       )}
     </div>
   );
