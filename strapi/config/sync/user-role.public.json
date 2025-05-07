@@ -6,6 +6,16 @@
   "locale": null,
   "permissions": [
     {
+      "documentId": "bfbj7m9vgrpxyumkibi15ijv",
+      "action": "api::lyric.lyric.find",
+      "locale": null
+    },
+    {
+      "documentId": "ik4gbpglface6tv5g7zirzq0",
+      "action": "api::lyric.lyric.findOne",
+      "locale": null
+    },
+    {
       "documentId": "by0tfb17jmv3ztslhyxq6j6c",
       "action": "plugin::users-permissions.auth.callback",
       "locale": null
