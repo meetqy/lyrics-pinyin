@@ -1,7 +1,9 @@
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Download, Share2, ThumbsUp } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { cn, getStrapiAssetUrl } from "@/lib/utils";
+import { query } from "@/apollo/client";
+import { gql } from "@apollo/client";
 
 // Mock data - replace with real API data later
 const MOCK_SONG = {
@@ -60,7 +62,43 @@ const DifficultyButton = ({
   );
 };
 
-export default function LyricsDetailPage() {
+async function fetchLyric(id: string) {
+  const { data } = await query({
+    query: gql`
+      query Lyric($documentId: ID!) {
+        lyric(documentId: $documentId) {
+          author
+          author_py
+          cover {
+            url
+          }
+          downloads
+          lyrics
+          lyrics_py
+          name
+          name_py
+          views
+        }
+      }
+    `,
+    variables: {
+      documentId: id,
+    },
+  });
+
+  return data.lyric;
+}
+
+export default async function LyricsDetailPage({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  const { id } = await params;
+  const lyric = await fetchLyric(id);
+  const lyrics = lyric.lyrics.split("\n");
+  const lyricsPinyin = lyric.lyrics_py.split("\n");
+
   const votes = MOCK_SONG.difficulty;
   const highestVotes = Math.max(...Object.values(votes));
 
@@ -68,20 +106,6 @@ export default function LyricsDetailPage() {
     <div className="min-h-screen bg-gradient-to-b from-background/80 to-background">
       {/* Hero Section */}
       <div className="relative">
-        {/* Background Image with Overlay */}
-        <div className="absolute inset-0 z-0">
-          <div className="relative w-full h-[400px]">
-            <Image
-              src={MOCK_SONG.image}
-              alt={MOCK_SONG.title}
-              fill
-              className="object-cover opacity-30"
-              priority
-            />
-            <div className="absolute inset-0 bg-gradient-to-b from-background/80 via-background to-background" />
-          </div>
-        </div>
-
         {/* Content */}
         <div className="container max-w-screen-lg relative z-10 pt-12">
           <div className="flex flex-col md:flex-row gap-8">
@@ -89,8 +113,8 @@ export default function LyricsDetailPage() {
             <div className="w-[200px] md:w-[280px] shrink-0 mx-auto md:mx-0">
               <div className="aspect-square relative rounded-lg overflow-hidden shadow-xl ring-1 ring-white/10">
                 <Image
-                  src={MOCK_SONG.image}
-                  alt={MOCK_SONG.title}
+                  src={getStrapiAssetUrl(lyric.cover.url, "small")}
+                  alt={lyric.name + "cover"}
                   fill
                   className="object-cover"
                   priority
@@ -104,15 +128,15 @@ export default function LyricsDetailPage() {
                 {/* Title & Artist */}
                 <div className="space-y-2">
                   <h1 className="text-3xl md:text-5xl font-bold">
-                    {MOCK_SONG.title}
+                    {lyric.name}
                   </h1>
                   <p className="text-lg md:text-xl text-primary/90">
-                    {MOCK_SONG.titlePinyin}
+                    {lyric.name_py}
                   </p>
                   <div className="space-y-1 pt-2">
-                    <p className="text-lg">{MOCK_SONG.artist}</p>
+                    <p className="text-lg">{lyric.author}</p>
                     <p className="text-sm text-muted-foreground">
-                      {MOCK_SONG.artistPinyin}
+                      {lyric.author_py}
                     </p>
                   </div>
                 </div>
@@ -144,13 +168,13 @@ export default function LyricsDetailPage() {
       <div className="container max-w-screen-lg py-12">
         <div className="border rounded-lg p-8 bg-card/50 backdrop-blur-sm">
           <div className="space-y-12 text-center">
-            {MOCK_SONG.lyrics.map((line, index) => (
+            {lyrics.map((line: string, index: number) => (
               <div key={index} className="group">
                 <p className="text-sm tracking-widest text-primary/70 font-medium mb-2">
-                  {line.pinyin}
+                  {lyricsPinyin[index]}
                 </p>
                 <p className="text-2xl tracking-wide group-hover:text-primary transition-colors">
-                  {line.text}
+                  {line}
                 </p>
               </div>
             ))}

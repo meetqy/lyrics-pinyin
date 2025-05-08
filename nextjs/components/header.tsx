@@ -100,7 +100,9 @@ export const Header = () => {
               <Link href="/#faq">Help</Link>
             </Button>
           </div>
-          <Button size="sm">Get Started</Button>
+          <Button size="sm" asChild>
+            <Link href={"/lyrics"}>Get Started</Link>
+          </Button>
         </div>
       </div>
     </header>
