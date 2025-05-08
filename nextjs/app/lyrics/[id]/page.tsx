@@ -1,9 +1,24 @@
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
-import { Download, Share2, ThumbsUp } from "lucide-react";
-import { cn, getStrapiAssetUrl } from "@/lib/utils";
+import { Download, Share2 } from "lucide-react";
+import { getStrapiAssetUrl } from "@/lib/utils";
 import { query } from "@/apollo/client";
 import { gql } from "@apollo/client";
+import { Metadata } from "next";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}): Promise<Metadata> {
+  const { id } = await params;
+  const lyric = await fetchLyric(id);
+
+  return {
+    title: `${lyric.name} - ${lyric.author}`,
+    description: `Learn "${lyric.name}" (${lyric.name_py}) by ${lyric.author} with pinyin lyrics. Perfect for Chinese language learners.`,
+  };
+}
 
 async function fetchLyric(id: string) {
   const { data } = await query({
