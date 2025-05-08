@@ -36,12 +36,20 @@
       "required": true
     },
     "cover": {
-      "allowedTypes": [
-        "images"
-      ],
       "type": "media",
       "multiple": false,
-      "required": true
+      "required": true,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "views": {
+      "type": "integer",
+      "default": 0
+    },
+    "downloads": {
+      "type": "integer",
+      "default": 0
     }
   }
 }

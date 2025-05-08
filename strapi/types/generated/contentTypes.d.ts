@@ -387,6 +387,7 @@ export interface ApiLyricLyric extends Struct.CollectionTypeSchema {
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    downloads: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<0>;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<'oneToMany', 'api::lyric.lyric'> &
       Schema.Attribute.Private;
@@ -398,6 +399,7 @@ export interface ApiLyricLyric extends Struct.CollectionTypeSchema {
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    views: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<0>;
   };
 }
 

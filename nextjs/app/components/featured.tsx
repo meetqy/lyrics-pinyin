@@ -1,16 +1,22 @@
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 import Image from "next/image";
-import { ArrowRight, StarIcon } from "lucide-react";
+import { ArrowRight, EyeIcon, StarIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { getStrapiAssetUrl } from "@/lib/utils";
 
-export const Featured = () => {
+type FeaturedProps = {
+  lyrics: {
+    cover: { url: string };
+    name: string;
+    name_py: string;
+    author: string;
+    author_py: string;
+    documentId: string;
+  }[];
+};
+
+export const Featured = ({ lyrics }: FeaturedProps) => {
   return (
     <section className="container py-24">
       <div className="space-y-12">
@@ -27,53 +33,46 @@ export const Featured = () => {
 
         {/* Featured Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {Array(8)
-            .fill(null)
-            .map((_, index) => (
-              <Card
-                key={index}
-                className="group overflow-hidden hover:shadow-lg transition-all duration-300"
-              >
-                <div className="relative">
-                  <div className="aspect-square relative">
-                    <Image
-                      src={`/placeholder-${index + 1}.jpg`}
-                      alt="Song cover"
-                      width={500}
-                      height={500}
-                      className="object-cover group-hover:scale-105 transition-all duration-500"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-background/0 opacity-0 group-hover:opacity-100 transition-opacity" />
-                  </div>
+          {lyrics.map((_, index) => (
+            <Card
+              key={index}
+              className="group relative overflow-hidden py-0 hover:shadow-lg transition-all duration-300"
+            >
+              <Link
+                href={`/lyrics/${_.documentId}`}
+                className="absolute inset-0 z-10"
+                aria-label={`View ${_.name}(${_.name_py}) lyrics pinyin`}
+              />
+              <div className="relative">
+                <div className="aspect-square relative">
+                  <Image
+                    src={getStrapiAssetUrl(_.cover.url, "small")}
+                    alt="Song cover"
+                    width={500}
+                    height={500}
+                    className="object-cover"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-transparent opacity-80 group-hover:opacity-80 transition-opacity" />
+                </div>
 
-                  {/* Song Info Overlay */}
-                  <div className="absolute bottom-0 left-0 right-0 p-4">
-                    <div className="flex items-center justify-between text-white">
-                      <div className="space-y-1">
-                        <h3 className="font-semibold text-lg leading-none">
-                          好想你
-                        </h3>
-                        <p className="text-sm opacity-90">Hǎo xiǎng nǐ</p>
-                      </div>
-                      <div className="flex items-center gap-1">
-                        <StarIcon className="w-4 h-4" />
-                        <span className="text-sm">4.9</span>
-                      </div>
+                {/* Song Info Overlay */}
+                <div className="absolute bottom-0 left-0 right-0 p-4">
+                  <div className="flex items-center justify-between">
+                    <div className="space-y-1">
+                      <h3 className="font-medium text-lg leading-none text-black">
+                        {_.name}
+                      </h3>
+                      <p className="text-sm text-black/90">{_.name_py}</p>
+                    </div>
+                    <div className="flex items-center gap-1 text-black">
+                      <EyeIcon className="w-4 h-4 text-primary" />
+                      <span className="text-sm font-medium">109</span>
                     </div>
                   </div>
                 </div>
-
-                {/* Card Footer */}
-                <CardContent className="p-4">
-                  <div className="flex justify-between items-center">
-                    <CardDescription>四叶草</CardDescription>
-                    <span className="text-xs bg-primary/10 text-primary px-2 py-0.5 rounded-full">
-                      Easy
-                    </span>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
+              </div>
+            </Card>
+          ))}
         </div>
 
         {/* Stats Row */}
