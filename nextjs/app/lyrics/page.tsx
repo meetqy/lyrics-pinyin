@@ -13,6 +13,7 @@ import {
 import { query } from "@/apollo/client";
 import { gql } from "@apollo/client";
 import { getStrapiAssetUrl } from "@/lib/utils";
+import { Metadata } from "next";
 
 // Types
 type SearchParams = {
@@ -23,6 +24,22 @@ type SearchParams = {
 
 // Constants
 const PAGE_SIZE = 12;
+
+export async function generateMetadata({
+  searchParams: _searchParams,
+}: {
+  searchParams: Promise<SearchParams>;
+}): Promise<Metadata> {
+  const searchParams = await _searchParams;
+  const currentPage = Number(searchParams.page) || 1;
+
+  return {
+    title: searchParams.q
+      ? `Search: ${searchParams.q} - Page ${currentPage}`
+      : `All Chinese Songs with Pinyin - Page ${currentPage}`,
+    description: `Browse our collection of Chinese songs with pinyin lyrics. Find your favorite songs and learn Chinese through music. Page ${currentPage}.`,
+  };
+}
 
 async function fetchList(page: number) {
   const { data } = await query({

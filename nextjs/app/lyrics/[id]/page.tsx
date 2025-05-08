@@ -5,63 +5,6 @@ import { cn, getStrapiAssetUrl } from "@/lib/utils";
 import { query } from "@/apollo/client";
 import { gql } from "@apollo/client";
 
-// Mock data - replace with real API data later
-const MOCK_SONG = {
-  id: 1,
-  title: "月亮代表我的心",
-  titlePinyin: "Yuè liàng dài biǎo wǒ de xīn",
-  artist: "邓丽君",
-  artistPinyin: "Dèng lì jūn",
-  image: "https://picsum.photos/500/500",
-  difficulty: {
-    easy: 45,
-    medium: 35,
-    hard: 20,
-  },
-  lyrics: [
-    {
-      text: "你问我爱你有多深",
-      pinyin: "nǐ wèn wǒ ài nǐ yǒu duō shēn",
-    },
-    {
-      text: "我爱你有几分",
-      pinyin: "wǒ ài nǐ yǒu jǐ fēn",
-    },
-    // ... more lyrics
-  ],
-};
-
-const DifficultyButton = ({
-  difficulty,
-  votes,
-  isHighest,
-}: {
-  difficulty: string;
-  votes: number;
-  isHighest: boolean;
-}) => {
-  return (
-    <Button
-      variant={isHighest ? "default" : "outline"}
-      size="sm"
-      className={cn(
-        "min-w-[100px] relative",
-        isHighest && "ring-2 ring-primary/20"
-      )}
-    >
-      <div className="flex items-center gap-1">
-        <span className="capitalize">{difficulty}</span>
-        <span className="text-xs font-normal">{votes}%</span>
-      </div>
-      {isHighest && (
-        <span className="absolute -top-2 -right-2 bg-primary text-primary-foreground text-xs px-1.5 py-0.5 rounded-full">
-          Most
-        </span>
-      )}
-    </Button>
-  );
-};
-
 async function fetchLyric(id: string) {
   const { data } = await query({
     query: gql`
@@ -98,9 +41,6 @@ export default async function LyricsDetailPage({
   const lyric = await fetchLyric(id);
   const lyrics = lyric.lyrics.split("\n");
   const lyricsPinyin = lyric.lyrics_py.split("\n");
-
-  const votes = MOCK_SONG.difficulty;
-  const highestVotes = Math.max(...Object.values(votes));
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-background/80 to-background">
@@ -142,20 +82,16 @@ export default async function LyricsDetailPage({
                 </div>
 
                 {/* Difficulty Rating */}
-                <div className="space-y-3">
-                  <div className="flex items-center gap-2 text-sm text-muted-foreground justify-center md:justify-start">
-                    <ThumbsUp className="w-4 h-4" />
-                    <span>Difficulty Rating</span>
-                  </div>
-                  <div className="flex flex-wrap items-center gap-4 justify-center md:justify-start">
-                    {Object.entries(votes).map(([key, value]) => (
-                      <DifficultyButton
-                        key={key}
-                        difficulty={key}
-                        votes={value}
-                        isHighest={value === highestVotes}
-                      />
-                    ))}
+                <div className="container max-w-screen-lg relative z-10 py-12">
+                  <div className="flex items-center justify-end h-16 gap-4">
+                    <Button size="lg" variant="outline">
+                      <Share2 className="w-4 h-4 mr-2" />
+                      Share
+                    </Button>
+                    <Button size="lg" className="min-w-[140px]">
+                      <Download className="w-4 h-4 mr-2" />
+                      Download PDF
+                    </Button>
                   </div>
                 </div>
               </div>
@@ -179,20 +115,6 @@ export default async function LyricsDetailPage({
               </div>
             ))}
           </div>
-        </div>
-      </div>
-
-      {/* Action Buttons Section */}
-      <div className="container max-w-screen-lg relative z-10 py-12">
-        <div className="flex items-center justify-end h-16 gap-4">
-          <Button size="lg" variant="outline">
-            <Share2 className="w-4 h-4 mr-2" />
-            Share
-          </Button>
-          <Button size="lg" className="min-w-[140px]">
-            <Download className="w-4 h-4 mr-2" />
-            Download PDF
-          </Button>
         </div>
       </div>
     </div>
