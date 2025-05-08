@@ -5,6 +5,9 @@ import { CtaFooter } from "./components/cta-footer";
 import { query } from "@/apollo/client";
 import { gql } from "@apollo/client";
 
+export const fetchCache = "force-no-store";
+export const revalidate = 0;
+
 async function fetchFeatured() {
   const { data } = await query({
     query: gql`
