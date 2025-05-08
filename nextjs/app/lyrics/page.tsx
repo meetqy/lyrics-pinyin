@@ -7,10 +7,12 @@ import {
   Pagination,
   PaginationContent,
   PaginationItem,
-  PaginationLink,
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
+import { query } from "@/apollo/client";
+import { gql } from "@apollo/client";
+import { getStrapiAssetUrl } from "@/lib/utils";
 
 // Types
 type SearchParams = {
@@ -20,7 +22,40 @@ type SearchParams = {
 };
 
 // Constants
-const PAGE_SIZE = 10;
+const PAGE_SIZE = 12;
+
+async function fetchList(page: number) {
+  const { data } = await query({
+    query: gql`
+      query Lyrics($sort: [String], $pagination: PaginationArg) {
+        lyrics(sort: $sort, pagination: $pagination) {
+          cover {
+            url
+          }
+          name
+          name_py
+          author
+          author_py
+          documentId
+        }
+        lyrics_connection {
+          pageInfo {
+            page
+            pageCount
+            pageSize
+            total
+          }
+        }
+      }
+    `,
+    variables: {
+      pagination: { pageSize: PAGE_SIZE, page },
+      sort: ["createdAt:desc"],
+    },
+  });
+
+  return data;
+}
 
 const filterSongs = (songs: typeof MOCK_SONGS, params: SearchParams) => {
   let filtered = [...songs];
@@ -156,15 +191,15 @@ const PaginationControl = ({
   );
 };
 
-const SongRow = ({ song }: { song: (typeof MOCK_SONGS)[0] }) => (
-  <Link href={`/lyrics/${song.id}`}>
+const SongRow = ({ song }: { song: any }) => (
+  <Link href={`/lyrics/${song.documentId}`}>
     <div className="group flex items-center gap-4 p-4 hover:bg-muted/50 rounded-lg transition-colors">
       {/* Cover Image */}
       <div className="relative w-16 h-16 flex-shrink-0 overflow-hidden rounded-md">
         <Image
           fill
-          src={song.image}
-          alt={song.title}
+          src={getStrapiAssetUrl(song.cover.url, "small")}
+          alt={song.name + " cover"}
           className="object-cover group-hover:scale-105 transition-transform duration-500"
         />
       </div>
@@ -173,23 +208,23 @@ const SongRow = ({ song }: { song: (typeof MOCK_SONGS)[0] }) => (
       <div className="flex-1 min-w-0">
         {/* Title */}
         <div className="space-y-0.5">
-          <h3 className="font-medium line-clamp-1">{song.title}</h3>
+          <h3 className="font-medium line-clamp-1">{song.name}</h3>
           <p className="text-xs text-muted-foreground tracking-wide">
-            {song.titlePinyin}
+            {song.name_py}
           </p>
         </div>
       </div>
 
       {/* Artist - fixed width column */}
       <div className="w-40 hidden sm:block">
-        <p className="text-sm line-clamp-1">{song.artist}</p>
-        <p className="text-xs text-muted-foreground">{song.artistPinyin}</p>
+        <p className="text-sm line-clamp-1">{song.author}</p>
+        <p className="text-xs text-muted-foreground">{song.author_py}</p>
       </div>
 
       {/* Difficulty Badge - fixed width column */}
       <div className="w-24 text-center hidden md:block">
         <span className="text-xs bg-primary/10 text-primary px-2 py-1 rounded-full">
-          {song.difficulty}
+          Easy
         </span>
       </div>
 
@@ -204,19 +239,20 @@ const SongRow = ({ song }: { song: (typeof MOCK_SONGS)[0] }) => (
   </Link>
 );
 
-export default function LyricsListPage({
-  searchParams,
+export default async function LyricsListPage({
+  searchParams: _searchParams,
 }: {
-  searchParams: SearchParams;
+  searchParams: Promise<SearchParams>;
 }) {
+  const searchParams = await _searchParams;
   const currentPage = Number(searchParams.page || 1);
+  const data = await fetchList(currentPage);
+  const { pageInfo } = data.lyrics_connection;
+  const { lyrics } = data;
+  console.log("Fetched Lyrics:", lyrics);
+
   const filteredSongs = filterSongs(MOCK_SONGS, searchParams);
   const totalSongs = filteredSongs.length;
-
-  // Pagination logic
-  const startIndex = (currentPage - 1) * PAGE_SIZE;
-  const endIndex = startIndex + PAGE_SIZE;
-  const currentSongs = filteredSongs.slice(startIndex, endIndex);
 
   return (
     <div className="container py-8">
@@ -233,8 +269,8 @@ export default function LyricsListPage({
 
       {/* Songs List */}
       <div className="divide-y">
-        {MOCK_SONGS.map((song) => (
-          <SongRow key={song.id} song={song} />
+        {lyrics.map((song: any) => (
+          <SongRow key={song.documentId} song={song} />
         ))}
       </div>
 
