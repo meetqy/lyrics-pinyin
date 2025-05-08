@@ -1,6 +1,6 @@
 import { Card } from "@/components/ui/card";
 import Image from "next/image";
-import { ArrowRight, EyeIcon, StarIcon } from "lucide-react";
+import { ArrowRight, EyeIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { getStrapiAssetUrl } from "@/lib/utils";

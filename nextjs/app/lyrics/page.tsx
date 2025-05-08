@@ -57,87 +57,6 @@ async function fetchList(page: number) {
   return data;
 }
 
-const filterSongs = (songs: typeof MOCK_SONGS, params: SearchParams) => {
-  let filtered = [...songs];
-
-  if (params.difficulty && params.difficulty !== "all") {
-    filtered = filtered.filter(
-      (song) =>
-        song.difficulty.toLowerCase() === params.difficulty?.toLowerCase()
-    );
-  }
-
-  if (params.q) {
-    const query = params.q.toLowerCase();
-    filtered = filtered.filter(
-      (song) =>
-        song.title.toLowerCase().includes(query) ||
-        song.titlePinyin.toLowerCase().includes(query) ||
-        song.artist.toLowerCase().includes(query) ||
-        song.artistPinyin.toLowerCase().includes(query)
-    );
-  }
-
-  return filtered;
-};
-
-const MOCK_SONGS = [
-  {
-    id: 1,
-    title: "好想你",
-    titlePinyin: "Hǎo xiǎng nǐ",
-    artist: "四叶草",
-    artistPinyin: "Sì yè cǎo",
-    difficulty: "Easy",
-    image: "https://picsum.photos/500/500",
-  },
-  {
-    id: 2,
-    title: "漂洋过海来看你",
-    titlePinyin: "Piāo yáng guò hǎi lái kàn nǐ",
-    artist: "刘明湘",
-    artistPinyin: "Liú míng xiāng",
-    difficulty: "Medium",
-    image: "https://picsum.photos/500/500",
-  },
-  {
-    id: 3,
-    title: "月亮代表我的心",
-    titlePinyin: "Yuè liàng dài biǎo wǒ de xīn",
-    artist: "邓丽君",
-    artistPinyin: "Dèng lì jūn",
-    difficulty: "Easy",
-    image: "https://picsum.photos/500/500",
-  },
-  {
-    id: 4,
-    title: "告白气球",
-    titlePinyin: "Gào bái qì qiú",
-    artist: "周杰伦",
-    artistPinyin: "Zhōu jié lún",
-    difficulty: "Medium",
-    image: "https://picsum.photos/500/500",
-  },
-  {
-    id: 5,
-    title: "小幸运",
-    titlePinyin: "Xiǎo xìng yùn",
-    artist: "田馥甄",
-    artistPinyin: "Tián fù zhēn",
-    difficulty: "Easy",
-    image: "https://picsum.photos/500/500",
-  },
-  {
-    id: 6,
-    title: "平凡之路",
-    titlePinyin: "Píng fán zhī lù",
-    artist: "朴树",
-    artistPinyin: "Pǔ shù",
-    difficulty: "Hard",
-    image: "https://picsum.photos/500/500",
-  },
-];
-
 // Pagination Component
 const PaginationControl = ({
   total,
@@ -249,10 +168,6 @@ export default async function LyricsListPage({
   const data = await fetchList(currentPage);
   const { pageInfo } = data.lyrics_connection;
   const { lyrics } = data;
-  console.log("Fetched Lyrics:", lyrics);
-
-  const filteredSongs = filterSongs(MOCK_SONGS, searchParams);
-  const totalSongs = filteredSongs.length;
 
   return (
     <div className="container py-8">
@@ -275,7 +190,7 @@ export default async function LyricsListPage({
       </div>
 
       {/* Empty State */}
-      {MOCK_SONGS.length === 0 && (
+      {lyrics.length === 0 && (
         <div className="text-center py-12">
           <p className="text-muted-foreground">
             No songs found matching your criteria
@@ -284,9 +199,9 @@ export default async function LyricsListPage({
       )}
 
       {/* Pagination */}
-      {totalSongs > 0 && (
+      {pageInfo.pageCount > 1 && (
         <PaginationControl
-          total={totalSongs}
+          total={pageInfo.total}
           page={currentPage}
           searchParams={searchParams}
         />
