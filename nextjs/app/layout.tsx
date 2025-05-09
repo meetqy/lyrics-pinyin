@@ -62,16 +62,16 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <script
+          async
+          data-domain="lyrics-pinyin.com"
+          src="https://plausible.moyuo.com/js/script.js"
+        />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <head>
-          <script
-            async
-            data-domain="lyrics-pinyin.com"
-            src="https://plausible.moyuo.com/js/script.js"
-          />
-        </head>
         <ApolloWrapper>
           <Header />
           {children}

@@ -1,0 +1,40 @@
+Lyrics Pinyin - Chinese Learning Platform
+
+Website URL: lyrics-pinyin.com
+Repository: github.com/meetqy/lyrics-pinyin
+License: AGPL-3.0
+
+Description:
+A free online platform that helps users learn Chinese through music by providing synchronized pinyin lyrics. The platform offers Chinese song lyrics with pinyin transliteration to aid pronunciation and language learning.
+
+Key Features:
+- Synchronized Chinese characters with pinyin annotations
+- Full pinyin coverage for all Chinese characters
+- Print-friendly format for offline learning
+- PDF downloads of lyrics
+- No registration required for access
+- Search functionality for songs and artists
+- Difficulty ratings for songs
+- Mobile-responsive design
+
+Tech Stack:
+Frontend:
+- Next.js 14
+- TypeScript
+- Tailwind CSS
+- shadcn/ui components
+- Apollo Client for GraphQL
+
+Backend:
+- Strapi (Headless CMS)
+- PostgreSQL database
+- GraphQL API
+
+Infrastructure:
+- Frontend hosted on Vercel
+- Backend hosted on Digital Ocean
+- PostgreSQL database for content storage
+
+Project Structure:
+/nextjs - Frontend application
+/strapi - Backend CMS
