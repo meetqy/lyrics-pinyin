@@ -25,7 +25,7 @@ async function fetchFeatured() {
       }
     `,
     variables: {
-      pagination: { pageSize: 6 },
+      pagination: { pageSize: 8 },
       sort: ["createdAt:desc"],
     },
   });
