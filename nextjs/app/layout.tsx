@@ -63,7 +63,7 @@ export default function RootLayout({
     <html lang="en">
       <head>
         <script async data-domain="lyrics-pinyin.com" src="https://plausible.moyuo.com/js/script.js" />
-        <script data-cfasync="false" src="//immoderatebreathtaking.com/a8159570bd9cc2174147fecbdeaa2ccf/invoke.js"></script>
+        <script async data-cfasync="false" src="//immoderatebreathtaking.com/a8159570bd9cc2174147fecbdeaa2ccf/invoke.js"></script>
       </head>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <ApolloWrapper>
