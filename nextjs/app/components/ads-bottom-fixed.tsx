@@ -32,12 +32,16 @@ export function AdsBottomFixed({ className }: AdsBottomFixedProps) {
     };
   }, []);
 
+  console.log("AdsBottomFixed isMobile:", isMobile);
+
+  if (isMobile === null) return null; // 等待初始检查完成
+
   return (
     <div>
       {!isMobile ? (
-        <AdsBanner className={cn("fixed bottom-0 left-1/2 z-50 -translate-x-1/2", className)} atKey="e6b55b366201530668951e1ea5fc5153" width={728} height={90} />
+        <AdsBanner className={cn("fixed bottom-0 left-1/2 -translate-x-1/2 z-50", className)} atKey="e6b55b366201530668951e1ea5fc5153" width={728} height={90} />
       ) : (
-        <AdsBanner className={cn("fixed bottom-0 left-1/2 z-50 w-full -translate-x-1/2", className)} atKey="b98eb88e3f53979f7471e45b7100d6bb" width={320} height={50} />
+        <AdsBanner className={cn("fixed bottom-0 left-1/2 -translate-x-1/2 z-50", className)} atKey="2fb9f59aefd42450687dbf205292444a" width={320} height={50} />
       )}
     </div>
   );

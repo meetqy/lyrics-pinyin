@@ -70,7 +70,7 @@ export default function RootLayout({
           <Header />
           <AdsBottomFixed />
           {children}
-          <div id="container-a8159570bd9cc2174147fecbdeaa2ccf" className="fixed w-36 left-0 top-24 z-50"></div>
+          <div id="container-a8159570bd9cc2174147fecbdeaa2ccf" className="fixed hidden md:block w-36 left-0 top-24 z-50"></div>
           <Footer />
         </ApolloWrapper>
       </body>
