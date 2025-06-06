@@ -3,13 +3,7 @@ import { Music2 } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { CtaHeader } from "./cta-header";
-import {
-  Pagination,
-  PaginationContent,
-  PaginationItem,
-  PaginationNext,
-  PaginationPrevious,
-} from "@/components/ui/pagination";
+import { Pagination, PaginationContent, PaginationItem, PaginationNext, PaginationPrevious } from "@/components/ui/pagination";
 import { query } from "@/apollo/client";
 import { gql } from "@apollo/client";
 import { getStrapiAssetUrl } from "@/lib/utils";
@@ -25,18 +19,12 @@ type SearchParams = {
 // Constants
 const PAGE_SIZE = 12;
 
-export async function generateMetadata({
-  searchParams: _searchParams,
-}: {
-  searchParams: Promise<SearchParams>;
-}): Promise<Metadata> {
+export async function generateMetadata({ searchParams: _searchParams }: { searchParams: Promise<SearchParams> }): Promise<Metadata> {
   const searchParams = await _searchParams;
   const currentPage = Number(searchParams.page) || 1;
 
   return {
-    title: searchParams.q
-      ? `Search: ${searchParams.q} - Page ${currentPage}`
-      : `All Chinese Songs with Pinyin - Page ${currentPage}`,
+    title: searchParams.q ? `Search: ${searchParams.q} - Page ${currentPage}` : `All Chinese Songs with Pinyin - Page ${currentPage}`,
     description: `Browse our collection of Chinese songs with pinyin lyrics. Find your favorite songs and learn Chinese through music. Page ${currentPage}.`,
   };
 }
@@ -75,22 +63,13 @@ async function fetchList(page: number) {
 }
 
 // Pagination Component
-const PaginationControl = ({
-  total,
-  page,
-  searchParams,
-}: {
-  total: number;
-  page: number;
-  searchParams: SearchParams;
-}) => {
+const PaginationControl = ({ total, page, searchParams }: { total: number; page: number; searchParams: SearchParams }) => {
   const totalPages = Math.ceil(total / PAGE_SIZE);
 
   const createPageURL = (pageNumber: number) => {
     const params = new URLSearchParams();
     params.set("page", pageNumber.toString());
-    if (searchParams.difficulty)
-      params.set("difficulty", searchParams.difficulty);
+    if (searchParams.difficulty) params.set("difficulty", searchParams.difficulty);
     if (searchParams.q) params.set("q", searchParams.q);
     return `?${params.toString()}`;
   };
@@ -99,11 +78,7 @@ const PaginationControl = ({
     <Pagination className="py-4">
       <PaginationContent>
         <PaginationItem>
-          <PaginationPrevious
-            href={createPageURL(page - 1)}
-            aria-disabled={page <= 1}
-            className={page <= 1 ? "pointer-events-none opacity-50" : ""}
-          />
+          <PaginationPrevious href={createPageURL(page - 1)} aria-disabled={page <= 1} className={page <= 1 ? "pointer-events-none opacity-50" : ""} />
         </PaginationItem>
 
         {/* Current Page Info */}
@@ -114,13 +89,7 @@ const PaginationControl = ({
         </PaginationItem>
 
         <PaginationItem>
-          <PaginationNext
-            href={createPageURL(page + 1)}
-            aria-disabled={page >= totalPages}
-            className={
-              page >= totalPages ? "pointer-events-none opacity-50" : ""
-            }
-          />
+          <PaginationNext href={createPageURL(page + 1)} aria-disabled={page >= totalPages} className={page >= totalPages ? "pointer-events-none opacity-50" : ""} />
         </PaginationItem>
       </PaginationContent>
     </Pagination>
@@ -132,12 +101,7 @@ const SongRow = ({ song }: { song: any }) => (
     <div className="group flex items-center gap-4 p-4 hover:bg-muted/50 rounded-lg transition-colors">
       {/* Cover Image */}
       <div className="relative w-16 h-16 flex-shrink-0 overflow-hidden rounded-md">
-        <Image
-          fill
-          src={getStrapiAssetUrl(song.cover.url, "small")}
-          alt={song.name + " cover"}
-          className="object-cover group-hover:scale-105 transition-transform duration-500"
-        />
+        <Image fill src={getStrapiAssetUrl(song.cover.url, "thumbnail")} alt={song.name + " cover"} className="object-cover group-hover:scale-105 transition-transform duration-500" />
       </div>
 
       {/* Song Info - using flex-1 to take remaining space */}
@@ -145,9 +109,7 @@ const SongRow = ({ song }: { song: any }) => (
         {/* Title */}
         <div className="space-y-0.5">
           <h3 className="font-medium line-clamp-1">{song.name}</h3>
-          <p className="text-xs text-muted-foreground tracking-wide">
-            {song.name_py}
-          </p>
+          <p className="text-xs text-muted-foreground tracking-wide">{song.name_py}</p>
         </div>
       </div>
 
@@ -159,9 +121,7 @@ const SongRow = ({ song }: { song: any }) => (
 
       {/* Difficulty Badge - fixed width column */}
       <div className="w-24 text-center hidden md:block">
-        <span className="text-xs bg-primary/10 text-primary px-2 py-1 rounded-full">
-          Easy
-        </span>
+        <span className="text-xs bg-primary/10 text-primary px-2 py-1 rounded-full">Easy</span>
       </div>
 
       {/* Action Button - fixed width column */}
@@ -175,11 +135,7 @@ const SongRow = ({ song }: { song: any }) => (
   </Link>
 );
 
-export default async function LyricsListPage({
-  searchParams: _searchParams,
-}: {
-  searchParams: Promise<SearchParams>;
-}) {
+export default async function LyricsListPage({ searchParams: _searchParams }: { searchParams: Promise<SearchParams> }) {
   const searchParams = await _searchParams;
   const currentPage = Number(searchParams.page || 1);
   const data = await fetchList(currentPage);
@@ -209,20 +165,12 @@ export default async function LyricsListPage({
       {/* Empty State */}
       {lyrics.length === 0 && (
         <div className="text-center py-12">
-          <p className="text-muted-foreground">
-            No songs found matching your criteria
-          </p>
+          <p className="text-muted-foreground">No songs found matching your criteria</p>
         </div>
       )}
 
       {/* Pagination */}
-      {pageInfo.pageCount > 1 && (
-        <PaginationControl
-          total={pageInfo.total}
-          page={currentPage}
-          searchParams={searchParams}
-        />
-      )}
+      {pageInfo.pageCount > 1 && <PaginationControl total={pageInfo.total} page={currentPage} searchParams={searchParams} />}
     </div>
   );
 }
