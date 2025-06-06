@@ -94,7 +94,7 @@ export default async function LyricsDetailPage({ params, searchParams }: { param
         </div>
       </div>
 
-      <Controls align={align as "left" | "center" | "right"} items={items as "top" | "bottom"} />
+      <Controls songName={lyric.name} artistName={lyric.author} align={align as "left" | "center" | "right"} items={items as "top" | "bottom"} />
 
       {/* Lyrics Section */}
       <PinyinBox lyrics={lyrics} lyricsPinyin={lyricsPinyin} items={items as "top" | "bottom"} align={align as "left" | "center" | "right"} />
