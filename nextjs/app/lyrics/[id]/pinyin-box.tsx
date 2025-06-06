@@ -3,8 +3,8 @@ import { cn } from "@/lib/utils";
 export const PinyinBox = ({ lyrics, lyricsPinyin, align = "center", items = "top" }: { lyrics: string[]; lyricsPinyin: string[]; align?: "left" | "center" | "right"; items?: "top" | "bottom" }) => {
   return (
     <div className="container max-w-screen-lg py-12">
-      <div id="pinyin-box" className="w-full">
-        <div className="border rounded-lg p-8 bg-card/50 backdrop-blur-sm">
+      <div className="border rounded-lg bg-card/50 backdrop-blur-sm">
+        <div id="pinyin-box" className="w-full p-8">
           {lyrics.map((line: string, index: number) => {
             const characters = line.split("");
             const pinyinWords = lyricsPinyin[index]?.split(" ") || [];

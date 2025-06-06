@@ -43,8 +43,6 @@ export const Controls = ({ align, items, songName, artistName }: Controls) => {
         style: {
           transform: "scale(2)",
           transformOrigin: "top left",
-          width: element.offsetWidth + "px",
-          height: element.offsetHeight + "px",
         },
       });
 
@@ -71,12 +69,6 @@ export const Controls = ({ align, items, songName, artistName }: Controls) => {
       const dataUrl = await domtoimage.toPng(element, {
         quality: 1,
         bgcolor: "#ffffff",
-        style: {
-          transform: "scale(2)",
-          transformOrigin: "top left",
-          width: element.offsetWidth + "px",
-          height: element.offsetHeight + "px",
-        },
       });
 
       // 创建一个图片对象来获取尺寸
