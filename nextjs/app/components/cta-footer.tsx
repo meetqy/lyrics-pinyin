@@ -4,7 +4,7 @@ import Link from "next/link";
 
 export const CtaFooter = () => {
   return (
-    <section className="container py-24">
+    <section className="container max-w-screen-xl py-24">
       <div className="relative px-6 py-12 md:py-16 md:px-12 rounded-3xl bg-muted/50 text-center space-y-6">
         {/* Background Pattern */}
         <div className="absolute inset-0 bg-grid-white/10 rounded-3xl" />
@@ -12,13 +12,8 @@ export const CtaFooter = () => {
         <div className="relative max-w-2xl mx-auto space-y-8">
           {/* Main Content */}
           <div className="space-y-4">
-            <h2 className="text-3xl font-bold tracking-tight">
-              Experience Chinese Music Like Never Before
-            </h2>
-            <p className="text-muted-foreground text-lg">
-              Start your journey with Lyrics Pinyin today - discover, learn, and
-              enjoy Chinese songs with our free tools
-            </p>
+            <h2 className="text-3xl font-bold tracking-tight">Experience Chinese Music Like Never Before</h2>
+            <p className="text-muted-foreground text-lg">Start your journey with Lyrics Pinyin today - discover, learn, and enjoy Chinese songs with our free tools</p>
           </div>
 
           {/* CTA Buttons */}

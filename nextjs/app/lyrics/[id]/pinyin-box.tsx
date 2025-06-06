@@ -7,7 +7,7 @@ export const PinyinBox = ({ lyrics, lyricsPinyin, align = "center", items = "top
         <div id="pinyin-box" className="w-full p-8">
           {lyrics.map((line: string, index: number) => {
             const characters = line.split("");
-            const pinyinWords = lyricsPinyin[index]?.split(" ") || [];
+            const pinyinWords = lyricsPinyin[index].replace(/\s\s/g, " ")?.split(" ") || [];
 
             return (
               <div key={index} className="group mb-8">

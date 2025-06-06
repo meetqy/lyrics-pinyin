@@ -4,6 +4,7 @@ import "./globals.css";
 import { Footer } from "@/components/footer";
 import { Header } from "@/components/header";
 import { ApolloWrapper } from "@/apollo/apollo-wrapper";
+import { AdsBottomFixed } from "./components/ads-bottom-fixed";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -20,8 +21,7 @@ export const metadata: Metadata = {
     default: "Chinese Songs with Lyrics Pinyin",
     template: "%s | Lyrics Pinyin",
   },
-  description:
-    "Learn Chinese through music with synchronized pinyin lyrics. A free tool for Chinese language learners worldwide.",
+  description: "Learn Chinese through music with synchronized pinyin lyrics. A free tool for Chinese language learners worldwide.",
   authors: [
     {
       name: "meetqy",
@@ -34,8 +34,7 @@ export const metadata: Metadata = {
     locale: "en_US",
     url: "https://lyrics-pinyin.com",
     title: "Lyrics Pinyin - Learn Chinese Through Music",
-    description:
-      "Learn Chinese through music with synchronized pinyin lyrics. A free tool for Chinese language learners worldwide.",
+    description: "Learn Chinese through music with synchronized pinyin lyrics. A free tool for Chinese language learners worldwide.",
     siteName: "Lyrics Pinyin",
   },
   twitter: {
@@ -63,18 +62,15 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <script
-          async
-          data-domain="lyrics-pinyin.com"
-          src="https://plausible.moyuo.com/js/script.js"
-        />
+        <script async data-domain="lyrics-pinyin.com" src="https://plausible.moyuo.com/js/script.js" />
+        <script data-cfasync="false" src="//immoderatebreathtaking.com/a8159570bd9cc2174147fecbdeaa2ccf/invoke.js"></script>
       </head>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <ApolloWrapper>
           <Header />
+          <AdsBottomFixed />
           {children}
+          <div id="container-a8159570bd9cc2174147fecbdeaa2ccf" className="fixed w-36 left-0 top-24 z-50"></div>
           <Footer />
         </ApolloWrapper>
       </body>
