@@ -1,16 +1,14 @@
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
-import { Download, Share2 } from "lucide-react";
+import { Share2 } from "lucide-react";
 import { getStrapiAssetUrl } from "@/lib/utils";
 import { query } from "@/apollo/client";
 import { gql } from "@apollo/client";
 import { Metadata } from "next";
+import { PinyinBox } from "./pinyin-box";
+import { Controls } from "./controls";
 
-export async function generateMetadata({
-  params,
-}: {
-  params: Promise<{ id: string }>;
-}): Promise<Metadata> {
+export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
   const { id } = await params;
   const lyric = await fetchLyric(id);
 
@@ -47,11 +45,8 @@ async function fetchLyric(id: string) {
   return data.lyric;
 }
 
-export default async function LyricsDetailPage({
-  params,
-}: {
-  params: Promise<{ id: string }>;
-}) {
+export default async function LyricsDetailPage({ params, searchParams }: { params: Promise<{ id: string }>; searchParams: { [key: string]: string | string[] | undefined } }) {
+  const { items = "top", align = "center" } = await searchParams;
   const { id } = await params;
   const lyric = await fetchLyric(id);
   const lyrics = lyric.lyrics.split("\n");
@@ -67,13 +62,7 @@ export default async function LyricsDetailPage({
             {/* Album Cover */}
             <div className="w-[200px] md:w-[280px] shrink-0 mx-auto md:mx-0">
               <div className="aspect-square relative rounded-lg overflow-hidden shadow-xl ring-1 ring-white/10">
-                <Image
-                  src={getStrapiAssetUrl(lyric.cover.url, "small")}
-                  alt={lyric.name + "cover"}
-                  fill
-                  className="object-cover"
-                  priority
-                />
+                <Image src={getStrapiAssetUrl(lyric.cover.url, "small")} alt={lyric.name + "cover"} fill className="object-cover" priority />
               </div>
             </div>
 
@@ -82,30 +71,20 @@ export default async function LyricsDetailPage({
               <div className="space-y-6">
                 {/* Title & Artist */}
                 <div className="space-y-2">
-                  <h1 className="text-3xl md:text-5xl font-bold">
-                    {lyric.name}
-                  </h1>
-                  <p className="text-lg md:text-xl text-primary/90">
-                    {lyric.name_py}
-                  </p>
+                  <h1 className="text-3xl md:text-5xl font-bold">{lyric.name}</h1>
+                  <p className="text-lg md:text-xl text-primary/90">{lyric.name_py}</p>
                   <div className="space-y-1 pt-2">
                     <p className="text-lg">{lyric.author}</p>
-                    <p className="text-sm text-muted-foreground">
-                      {lyric.author_py}
-                    </p>
+                    <p className="text-sm text-muted-foreground">{lyric.author_py}</p>
                   </div>
                 </div>
 
                 {/* Difficulty Rating */}
                 <div className="container max-w-screen-lg relative z-10 py-12">
-                  <div className="flex items-center justify-end h-16 gap-4">
-                    <Button size="lg" variant="outline">
+                  <div className="flex items-center h-16 gap-4">
+                    <Button size="lg" variant="outline" className="w-full">
                       <Share2 className="w-4 h-4 mr-2" />
                       Share
-                    </Button>
-                    <Button size="lg" className="min-w-[140px]">
-                      <Download className="w-4 h-4 mr-2" />
-                      Download PDF
                     </Button>
                   </div>
                 </div>
@@ -115,23 +94,10 @@ export default async function LyricsDetailPage({
         </div>
       </div>
 
+      <Controls align={align as "left" | "center" | "right"} items={items as "top" | "bottom"} />
+
       {/* Lyrics Section */}
-      <div className="container max-w-screen-lg py-12">
-        <div className="border rounded-lg p-8 bg-card/50 backdrop-blur-sm">
-          <div className="space-y-12 text-center">
-            {lyrics.map((line: string, index: number) => (
-              <div key={index} className="group">
-                <p className="text-sm tracking-widest text-primary/70 font-medium mb-2">
-                  {lyricsPinyin[index]}
-                </p>
-                <p className="text-2xl tracking-wide group-hover:text-primary transition-colors">
-                  {line}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
+      <PinyinBox lyrics={lyrics} lyricsPinyin={lyricsPinyin} items={items as "top" | "bottom"} align={align as "left" | "center" | "right"} />
     </div>
   );
 }
