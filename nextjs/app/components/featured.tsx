@@ -32,7 +32,7 @@ export const Featured = ({ lyrics }: FeaturedProps) => {
             <Card key={index} className="group relative overflow-hidden py-0 hover:shadow-lg transition-all duration-300">
               <Link href={`/lyrics/${_.documentId}`} className="absolute inset-0 z-10" aria-label={`View ${_.name}(${_.name_py}) lyrics pinyin`} />
               <div className="relative">
-                <div className="aspect-square relative">
+                <div className="aspect-square relative overflow-hidden">
                   <Image src={getStrapiAssetUrl(_.cover.url, "small")} alt="Song cover" width={500} height={500} className="object-cover" />
                   <div className="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-transparent opacity-80 group-hover:opacity-80 transition-opacity" />
                 </div>
