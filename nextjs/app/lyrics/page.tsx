@@ -8,6 +8,7 @@ import { query } from "@/apollo/client";
 import { gql } from "@apollo/client";
 import { getStrapiAssetUrl } from "@/lib/utils";
 import { Metadata } from "next";
+import { notFound } from "next/navigation";
 
 // Types
 type SearchParams = {
@@ -141,6 +142,10 @@ export default async function LyricsListPage({ searchParams: _searchParams }: { 
   const data = await fetchList(currentPage);
   const { pageInfo } = data.lyrics_connection;
   const { lyrics } = data;
+
+  if (currentPage < 1 || currentPage > pageInfo.pageCount) {
+    notFound();
+  }
 
   return (
     <div className="container py-8">
