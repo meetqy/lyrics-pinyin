@@ -32,8 +32,6 @@ export function AdsBottomFixed({ className }: AdsBottomFixedProps) {
     };
   }, []);
 
-  console.log("AdsBottomFixed isMobile:", isMobile);
-
   if (isMobile === null) return null; // 等待初始检查完成
 
   return (
